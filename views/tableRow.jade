@@ -1,0 +1,9 @@
+tr
+	td= content.Issue
+	td= content.EscTo
+	td= content.Prev
+	td= content.Next
+	td
+		button.btn.btn-primary.btn-mini.followUp(context_ID=content.ID, context_RevID=content.RevID) Follow Up
+	td
+		button.btn.btn-success.btn-mini.resolve(context_ID=content.ID, context_RevID=content.RevID) Resolved!

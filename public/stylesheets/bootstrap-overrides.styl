@@ -1,0 +1,170 @@
+
+// initial spacer from top to content
+.spacer
+  width: 100%
+  height: 80px
+
+.navbar .nav > li:first-child > a
+  padding-left: 0
+
+// removes top border from sidebar
+ul.nav.nav-tabs.nav-stacked 
+  li.first a
+    border-bottom: none
+
+  a
+    padding: 4px
+
+    div div
+      min-height: 26px
+      margin-top: 6px
+      padding-left: 5px
+
+ul.action-nav
+  margin: 0
+  padding: 0
+
+  li
+    list-style: none
+    margin-bottom:5px
+
+
+// chat area
+#main
+
+  #tabs
+    position: relative
+    top: 1px
+    z-index: 1
+
+    li
+      float: left
+      margin-right: 14px
+
+      a
+        display: block
+        padding: 9px 28px
+        border: 1px solid #ECECEC
+        border-bottom: none
+        border-radius: 8px 8px 0 0
+        background: #ECECEC
+        position: relative
+
+      &:hover
+          text-decoration: none
+
+      &.active a
+        background: white
+
+      &.active small
+          color: #CCC
+
+      .badge 
+          position: absolute
+          right: -7px
+          top: -7px
+
+      .buttonicon 
+          position: absolute
+          right: -7px
+          top: -7px
+
+      small
+          display: block
+          color: #999
+
+
+  #contents .tab-pane
+    height: 500px
+    overflow: hidden
+    box-shadow: 6px 6px 0 0 #efefef
+    box-sizing: border-box
+    border-right: 1px solid #ccc
+    border-bottom: 1px solid #ccc
+    border-left: 1px solid #efefef
+    border-top: 1px solid #efefef
+
+    li.comment
+      list-style: none
+      overflow: hidden
+      padding: 9px 0
+
+      &:nth-child(2n)
+        background: #efefef
+
+      a
+        display: block
+
+      img
+        float: left
+        margin: 0 7px 0
+        display: block
+        height: 48px
+        width: 48px
+        background: #ccc
+      
+      &.red
+        a
+          color: red
+
+      &.blue
+        a
+          color: blue
+
+      &.purple
+        a
+          color: purple
+
+      &.gold
+        a
+          color: gold
+
+      &.green
+        a
+          color: green
+
+      span.systemMessage
+        color: #BBB
+
+    ul
+      margin: 0
+
+  #input 
+    
+    input[type="text"]
+      box-sizing: border-box
+      margin: 28px 0 0
+      resize: none; 
+      box-shadow: -3px -3px 2px 0 rgba(0,0,0,.05) inset
+      width: 100%
+      color: #000
+      height: 40px
+      padding: 0
+      text-indent: 14px
+
+      &:focus
+        background: #fcfcef
+
+    a.btn
+      margin: 28px 0 0
+
+
+#errors ul, #errors li
+  padding: 0
+  margin: 0
+  list-style: none
+
+@media screen and (max-width: 980px)
+  
+  .spacer 
+    display: none
+
+  .container .nav
+    margin-left: 17px
+
+  #input
+    margin-bottom: 38px
+
+  .navbar-fixed-top .navbar-inner, 
+  .navbar-fixed-bottom .navbar-inner
+    padding: 0

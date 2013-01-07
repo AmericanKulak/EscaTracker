@@ -1,0 +1,61 @@
+[class^="smiley-"],
+[class*=" smiley-"] {
+  display: inline-block;
+  width: 26px;
+  height: 26px;
+  *margin-right: .3em;
+  line-height: 26px;
+  vertical-align: text-top;
+  background-image: url("../images/Smileys.png");
+  background-position: 26px 26px;
+  background-repeat: no-repeat;
+  margin-top: 1px;
+}
+.smiley-smile {
+  background-position: 0      0;
+}
+.smiley-winky {
+  background-position: -41px 0;
+}
+.smiley-tongue {
+  background-position: -82px 0;
+}
+.smiley-teeth {
+  background-position: -123px 0;
+}
+.smiley-shades {
+  background-position: -0px -36px;
+}
+.smiley-unimpressed {
+  background-position: -41px -36px;
+}
+.smiley-frown {
+  background-position: -82px -36px;
+}
+.smiley-surprise {
+  background-position: -123px -36px;
+}
+.smiley-hungry {
+  background-position: -0px -72px;
+}
+.smiley-devil {
+  background-position: -41px -72px;
+}
+.smiley-angel {
+  background-position: -82px -72px;
+}
+.smiley-clown {
+  background-position: -123px -72px;
+}
+.smiley-thinking {
+  background-position: -0px -108px;
+}
+.smiley-thumbsup {
+  background-position: -41px -108px;
+}
+.smiley-sick {
+  background-position: -82px -108px;
+}
+.smiley-mustasche {
+  background-position: -123px -108px;
+}

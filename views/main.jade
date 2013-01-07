@@ -1,0 +1,16 @@
+div.span1#sidebar
+  button.btn.btn-info.addButton Create Issue
+
+div.span10#main
+  div#issueDiv
+    table#issueTable.table.table-bordered.table-condensed
+      thead
+        th Issue
+        th Esc. To
+        th Previous
+        th Next
+        th Follow Up
+        th Resolve
+       each content in locals.tableContents
+         .content
+           include tableRow
