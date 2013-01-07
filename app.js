@@ -9,6 +9,7 @@ var express = require('express')
   , puts    = require('./routes/puts')
   , http    = require('http')
   , path    = require('path')
+  , request = require('superagent')
   , app     = express()
   , server  = http.createServer(app)
   

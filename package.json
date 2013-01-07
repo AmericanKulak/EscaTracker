@@ -13,6 +13,7 @@
     "stylus": "*",
     "validator" : "*",
     "bcrypt" : "*",
-    "email" : "*"
+    "email" : "*",
+    "superagent" : "*"
   }
 }

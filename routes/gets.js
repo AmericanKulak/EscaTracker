@@ -1,6 +1,6 @@
 var cradle = require('cradle');
-var db = new(cradle.Connection)('127.0.0.1', 5984, {cache: false}).database('escatracker');
-
+var db = new(cradle.Connection)('127.0.0.1', 5984, {cache: false}).database('escatracker')
+, request   = require('superagent');
 
 
 exports.index = function(req, response){
@@ -10,6 +10,7 @@ exports.index = function(req, response){
 
 	request.get("/issues", function(res, error){
 		issues = res;
+		console.log("this worked");
 		
 	});
 };
