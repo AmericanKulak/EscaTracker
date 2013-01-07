@@ -1,9 +1,16 @@
 tr
-	td= content.Issue
-	td= content.EscTo
-	td= content.Prev
-	td= content.Next
+	td= content.issue
+	td= content.escto
+	td= content.prev
+	td= content.next
 	td
-		button.btn.btn-primary.btn-mini.followUp(context_ID=content.ID, context_RevID=content.RevID) Follow Up
+		form.hiddenInput(name=content.id)
+			input.hiddenInput(name='_id', value=content.id, type='hidden')
+			input.hiddenInput(name='_revid', value=content.revid, type='hidden')
+			input.hiddenInput(name='issue', value=content.issue, type='hidden')
+			input.hiddenInput(name='escto', value=content.escto, type='hidden')
+			input.hiddenInput(name='prev', value=content.prev, type='hidden')
+			input.hiddenInput(name='next', value=content.next, type='hidden')
+		button.btn.btn-primary.btn-mini.followUp(name=content.id) Follow Up
 	td
-		button.btn.btn-success.btn-mini.resolve(context_ID=content.ID, context_RevID=content.RevID) Resolved!
+		button.btn.btn-success.btn-mini.resolve(name=content.id) Resolved!

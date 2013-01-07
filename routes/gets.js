@@ -4,17 +4,24 @@ var db = new(cradle.Connection)('127.0.0.1', 5984, {cache: false}).database('esc
 
 
 exports.index = function(req, response){
-	var jsRep = new Array();
-	var i=0;
-	var issues = [];
-
-	request.get("/issues", function(res, error){
-		issues = res;
-		console.log("this worked");
-		
-	});
+	if(req.accepts('text/html')=='text/html'){
+		request.get("http://127.0.0.1:8002/viewIssues", function(error, res){
+			if(error){return console.log(error);}
+			return response.render('index', { 
+		        title : 'EscaTracker',
+		        tableContents  : res.body
+	      	});
+		});
+	}
+	else if(req.accepts('json')=='json'){
+		request.get("http://127.0.0.1:8002/viewIssues", function(error, res){
+			if(error){return console.log(error);}
+			return res.body
+	      	
+		});
+	}
 };
-exports.issues = function(req,response){
+exports.viewIssues = function(req,response){
  	if(req.accepts('json')=='json'){
  		var jsRep = new Array();
 		var i=0;
@@ -22,21 +29,20 @@ exports.issues = function(req,response){
 		{
 			if(err)
 				{console.log(err);}
-			console.log(res);
 			res.forEach(function(row){
 				jsRep[i]=
 					{
-						issue: row.Title,
-						escto: row.Subject,
-						prev:  row.Previous,
-						next:  row.Next,
+						issue: row.title,
+						escto: row.subject,
+						prev:  row.previous,
+						next:  row.next,
 						id  :  row._id,
 						revid: row._rev
 					};
 				i++;
 			});
+			console.log(jsRep);
 			return response.json(jsRep);
-			
 		});
  	};
 };

@@ -36,14 +36,14 @@ app.configure('development', function(){
 });
 
 console.log("Loading gets!");
-app.get('/', gets.index);
-app.get('/issues', gets.issues);
+app.get('/issues', gets.index);
+app.get('/viewIssues', gets.viewIssues);
 
 console.log("Loading posts!");
 app.post('/create', posts.create);
 
 console.log("Loading puts!");
-app.put('/update', puts.update);
+app.put('/update/:id', puts.update);
 
 console.log("Ready to Go!");
 server.listen(app.get('port'));

@@ -2,14 +2,13 @@ $(document).ready(function(){
 
 	$("button.followUp").click(function(){
 		$("#followUpModal").modal("show");
-		id=$(this).attr("context_id");
-		revID=$(this).attr("context_revid");
+		id=$(this).attr("name");
 	});
 
 	$("button.resolve").click(function(){
 		$("#resolveModal").modal("show");
-		id=$(this).attr("context_id");
-		revID=$(this).attr("context_revid");
+		id=$(this).attr("name");
+
 	});
 
 	$("button.addButton").click(function(){
@@ -18,26 +17,31 @@ $(document).ready(function(){
 	});
 
 	$("#updateButton").click(function(){
-
+		var data=
+		{
+			"_id": id,
+			"_rev": $("form[name="+id+"] > input[name='_revid']").val(),
+			"title": $("form[name="+id+"] > input[name='issue']").val(),
+			"subject": $("form[name="+id+"] > input[name='escto']").val(),
+			"previous": getDateRep(),
+			"next": $("#nextFollowUpDate").val(),
+			"resolved": "unresolved"
+		};
+		update(data);
 	});
 
 	$("#resolveButton").click(function(){
-		var dtitle = $("#issueTitle").val();
-		var dsubject = $("#issueEscTo").val();
-		var dprevious = $("#issueLastFollowUpDate").val();
-		var dnext = $("#issueFollowUpDate").val();
-
 		var data=
 		{
-			_id: id,
-			_rev: revID,
-			Title: dtitle,
-			Subject: dsubject,
-			Previous: dprevious,
-			Next: dnext,
-			Resolved: "resolved"
+			"_id": id,
+			"_rev": $("form[name="+id+"] > input[name='_revid']").val(),
+			"title": $("form[name="+id+"] > input[name='issue']").val(),
+			"subject": $("form[name="+id+"] > input[name='escto']").val(),
+			"previous": $("form[name="+id+"] > input[name='prev']").val(),
+			"next": $("form[name="+id+"] > input[name='next']").val(),
+			"resolved": "resolved"
 		};
-		create(data);
+		update(data);
 	});
 
 	$("#createButton").click(function(){
@@ -48,11 +52,11 @@ $(document).ready(function(){
 
 		var data=
 		{
-			Title: dtitle,
-			Subject: dsubject,
-			Previous: dprevious,
-			Next: dnext,
-			Resolved: "unresolved"
+			"title": dtitle,
+			"subject": dsubject,
+			"previous": dprevious,
+			"next": dnext,
+			"resolved": "unresolved"
 		};
 		create(data);
 	});
@@ -61,24 +65,9 @@ $(document).ready(function(){
 var id=0;
 var revID=0;
 
-function followUp(data){
-	var success = function(response){
-		return location.href = "/";
-	};
-
-	// post to server
-	$.ajax({
-		"url" : "/update",
-		"dataType" : "json",
-		"data" : {issue: data},
-		"type" : "PUT",
-		"success" : success
-	});
-}
-
 function create(data){
 	var success = function(response){
-		return location.href = "/";
+		return location.href = "/issues";
 	};
 
 	// post to server
@@ -91,14 +80,14 @@ function create(data){
 	});
 }
 
-function resolve(data){
+function update(data){
 	var success = function(response){
-		return location.href = "/";
+		return location.href = "/issues";
 	};
 
 	// post to server
 	$.ajax({
-		"url" : "/update",
+		"url" : "/update/"+data._id,
 		"dataType" : "json",
 		"data" : {issue: data},
 		"type" : "PUT",
