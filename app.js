@@ -36,7 +36,7 @@ app.configure('development', function(){
 });
 
 console.log("Loading gets!");
-app.get('/issues', gets.index);
+app.get('/issues', gets.issues);
 app.get('/viewIssues', gets.viewIssues);
 
 console.log("Loading posts!");

@@ -2,14 +2,17 @@ var cradle = require('cradle');
 var db = new(cradle.Connection)('127.0.0.1', 5984, {cache: false}).database('escatracker')
 , request   = require('superagent');
 
+var sortDate= function(a,b){
+	return Date.parse(a.next)>Date.parse(b.next);
+}
 
-exports.index = function(req, response){
+exports.issues = function(req, response){
 	if(req.accepts('text/html')=='text/html'){
 		request.get("http://127.0.0.1:8002/viewIssues", function(error, res){
 			if(error){return console.log(error);}
 			return response.render('index', { 
 		        title : 'EscaTracker',
-		        tableContents  : res.body
+		        tableContents  : res.body.sort(sortDate)
 	      	});
 		});
 	}

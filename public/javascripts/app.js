@@ -1,6 +1,17 @@
 $(document).ready(function(){
+	var todayRows = $("tr > td:nth-child(4)").filter(function() {
+		return getDateDiff($(this).text()) <1;
+	}).closest("tr").addClass("error");
+
+	var nextWeekRows = $("tr > td:nth-child(4)").filter(function() {
+		var x = getDateDiff($(this).text());
+		if(x<8)
+			return x>0;
+		return false;
+	}).closest("tr").addClass("warning");
 
 	$("button.followUp").click(function(){
+		$("#nextFollowUpDate").val("");
 		$("#followUpModal").modal("show");
 		id=$(this).attr("name");
 	});
@@ -12,23 +23,19 @@ $(document).ready(function(){
 	});
 
 	$("button.addButton").click(function(){
-		$("#createModal").modal("show");
+		$("#issueTitle").val("");
+		$("#issueEscTo").val("");
 		$("#issueLastFollowUpDate").val(getDateRep());
+		$("#issueFollowUpDate").val("");
+		$("#createModal").modal("show");
+		
 	});
 
-	$("#updateButton").click(function(){
-		var data=
-		{
-			"_id": id,
-			"_rev": $("form[name="+id+"] > input[name='_revid']").val(),
-			"title": $("form[name="+id+"] > input[name='issue']").val(),
-			"subject": $("form[name="+id+"] > input[name='escto']").val(),
-			"previous": getDateRep(),
-			"next": $("#nextFollowUpDate").val(),
-			"resolved": "unresolved"
-		};
-		update(data);
-	});
+	$("#createModal").on('shown', function(){$("#issueTitle").focus();})
+	$("#followUpModal").on('shown', function(){$("#nextFollowUpDate").focus();})
+	$("#resolveModal").on('shown', function(){$("#resolveButton").focus();})
+
+	$("#updateButton").click(followUpComplete);
 
 	$("#resolveButton").click(function(){
 		var data=
@@ -44,26 +51,26 @@ $(document).ready(function(){
 		update(data);
 	});
 
-	$("#createButton").click(function(){
-		var dtitle = $("#issueTitle").val();
-		var dsubject = $("#issueEscTo").val();
-		var dprevious = $("#issueLastFollowUpDate").val();
-		var dnext = $("#issueFollowUpDate").val();
+	$("#createButton").click(createComplete);
 
-		var data=
-		{
-			"title": dtitle,
-			"subject": dsubject,
-			"previous": dprevious,
-			"next": dnext,
-			"resolved": "unresolved"
-		};
-		create(data);
-	});
+	$("#createModal > div > div> div > input").keypress(event, function(ev){if(13==event.keyCode)createComplete();})
+	$("#followUpModal > div > div> div > input").keypress(event, function(ev){if(13==event.keyCode)followUpComplete();})
 });
 
 var id=0;
 var revID=0;
+
+function infoError(message){
+	$("div.modal.in > div.modal-body").prepend([
+			'<div class="alert alert-error">',
+				'<button type="button" class="close" data-dismiss="alert">&times;</button>',
+				'<h4>',
+					message,
+				'</h4>',
+			'</div>'
+		].join(""));
+
+}
 
 function create(data){
 	var success = function(response){
@@ -85,7 +92,7 @@ function update(data){
 		return location.href = "/issues";
 	};
 
-	// post to server
+	// put to server
 	$.ajax({
 		"url" : "/update/"+data._id,
 		"dataType" : "json",
@@ -98,4 +105,80 @@ function update(data){
 function getDateRep(){
 	var d = new Date();
 	return (d.getMonth()+1)+"/"+(d.getDate())+"/"+d.getFullYear();
+}
+
+function correctDateFormat(date){
+	var pattern = /^([0-1]?[0-9])[\/|-]([0-3]?[0-9])[\/|-]((?:[0-9]{2})?[0-9]{2})$/g;
+	var match = pattern.exec(date);
+	if(match){
+		var month=match[1];
+		var day = match[2];
+		var year= match[3];
+		if(year.length<4){
+			year="20"+year;
+		}
+		if(day>31||month>12){
+			return false;
+		}
+		if(month<10&&month.length!=1){
+			month=month[1];
+		}
+		return [month,"/",day,"/",year].join("");
+	}
+	else{
+		return false;
+	}
+}
+
+function getDateDiff(date) {
+	var a=new Date(date);
+	var b= new Date();
+	return Math.floor(((a-b)/86400000))+1;
+}
+
+function followUpComplete(){
+	var dnext = correctDateFormat($("#nextFollowUpDate").val());
+	if(dnext&&getDateDiff(dnext)>-1){
+		var data=
+		{
+			"_id": id,
+			"_rev": $("form[name="+id+"] > input[name='_revid']").val(),
+			"title": $("form[name="+id+"] > input[name='issue']").val(),
+			"subject": $("form[name="+id+"] > input[name='escto']").val(),
+			"previous": getDateRep(),
+			"next": dnext,
+			"resolved": "unresolved"
+		};
+		update(data);
+	}
+	else 
+	{
+		infoError("Dates must be valid dates!");
+	}
+}
+
+function createComplete(){
+	var dtitle = $("#issueTitle").val();
+	var dsubject = $("#issueEscTo").val();
+	var dprevious = correctDateFormat($("#issueLastFollowUpDate").val());
+	var dnext = correctDateFormat($("#issueFollowUpDate").val());
+	if(dtitle&&dsubject){
+		if(dprevious&&dnext&&(getDateDiff(dnext)>-1)){
+			var data=
+			{
+				"title": dtitle,
+				"subject": dsubject,
+				"previous": dprevious,
+				"next": dnext,
+				"resolved": "unresolved"
+			};
+			create(data);
+		}
+		else{
+			infoError("Dates must be valid dates!");
+		}
+	}
+	else{
+		infoError("Please fill out all fields.");
+	}
 }

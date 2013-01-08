@@ -6,8 +6,8 @@ var cradle = require('cradle')
 	    console.log(req.body.issue);
 	    db.save(req.body.issue, function(err, doc){
 	      if(err){console.log(err);}
+	      return res.json({status: true });
 	      });
-	    return res.json({status: true });
 	}
-	else return res.json({status:false});
+	else {return res.json({status:false});}
   };
