@@ -44,7 +44,6 @@ exports.viewIssues = function(req,response){
 					};
 				i++;
 			});
-			console.log(jsRep);
 			return response.json(jsRep);
 		});
  	};
