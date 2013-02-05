@@ -7,6 +7,7 @@ var express = require('express')
   , gets    = require('./routes/gets')
   , posts   = require('./routes/posts')
   , puts    = require('./routes/puts')
+  , deletes = require('./routes/deletes')
   , http    = require('http')
   , path    = require('path')
   , request = require('superagent')
@@ -37,13 +38,16 @@ app.configure('development', function(){
 
 console.log("Loading gets!");
 app.get('/issues', gets.issues);
-app.get('/viewIssues', gets.viewIssues);
+app.get('/unresolvedIssues', gets.unresolvedIssues);
 
 console.log("Loading posts!");
-app.post('/create', posts.create);
+app.post('/issues', posts.issues);
 
 console.log("Loading puts!");
-app.put('/update/:id', puts.update);
+app.put('/issues/:id', puts.issues);
+
+console.log("Loading deletes!");
+app.del('/issues/:id', deletes.issues);
 
 console.log("Ready to Go!");
 server.listen(app.get('port'));

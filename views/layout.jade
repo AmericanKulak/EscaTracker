@@ -56,7 +56,7 @@ html
           label.control-label(for="issueTitle") Issue Title:
           div.controls
             input#issueTitle.text.input-xlarge(type="text", placeholder="Issue Title", name="issueTitle")
-          label.control-label(for="issueEscTo") Escalated To:
+          label.control-label(for="issueEscTo") Contact:
           div.controls
             input#issueEscTo.text(type="text", placeholder="Supervisor", name="issueEscTo")
           label.control-label(for="issueFollowUpDate") Follow Up Date:
@@ -68,6 +68,25 @@ html
       div.modal-footer
         a.btn(href="#", data-dismiss="modal") Cancel
         a#createButton.btn.btn-primary(href="#") Create
+
+    div#editModal.modal.hide.fade
+      div.modal-header
+        button.close(aria-hidden="true", data-dismiss="modal", type="button") &times;
+        h3 Edit an Issue
+      div.modal-body
+        div.control-group
+          label.control-label(for="editIssueTitle") Issue Title:
+          div.controls
+            input#editIssueTitle.text.input-xlarge(type="text", placeholder="Issue Title", name="editIssueTitle")
+          label.control-label(for="editIssueEscTo") Contact:
+          div.controls
+            input#editIssueEscTo.text(type="text", placeholder="Supervisor", name="editIssueEscTo")
+          label.control-label(for="editIssueFollowUpDate") Follow Up Date:
+          div.controls
+            input#editIssueFollowUpDate.text(type="text", placeholder="Month/Day/Year", name="editIssueFollowUpDate")
+      div.modal-footer
+        a.btn(href="#", data-dismiss="modal") Cancel
+        a#editButton.btn.btn-primary(href="#") Save
 
     block navigation
     

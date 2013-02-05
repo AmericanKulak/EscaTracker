@@ -19,7 +19,14 @@ $(document).ready(function(){
 	$("button.resolve").click(function(){
 		$("#resolveModal").modal("show");
 		id=$(this).attr("name");
+	});
 
+	$("button.edit").click(function(){
+		id=$(this).attr("name");
+		$("#editIssueTitle").val($("form[name="+id+"] > input[name='issue']").val());
+		$("#editIssueEscTo").val($("form[name="+id+"] > input[name='escto']").val());
+		$("#editIssueFollowUpDate").val($("form[name="+id+"] > input[name='next']").val());
+		$("#editModal").modal("show");
 	});
 
 	$("button.addButton").click(function(){
@@ -34,8 +41,23 @@ $(document).ready(function(){
 	$("#createModal").on('shown', function(){$("#issueTitle").focus();})
 	$("#followUpModal").on('shown', function(){$("#nextFollowUpDate").focus();})
 	$("#resolveModal").on('shown', function(){$("#resolveButton").focus();})
+	$("#editModal").on('shown', function(){$("#editIssueTitle").focus();})
 
 	$("#updateButton").click(followUpComplete);
+
+	$("#editButton").click(function(){
+		var data =
+		{
+			"_id": id,
+			"_rev": $("form[name="+id+"] > input[name='_revid']").val(),
+			"title": $("#editIssueTitle").val() || $("form[name="+id+"] > input[name='issue']").val(),
+			"subject": $("#editIssueEscTo").val() || $("form[name="+id+"] > input[name='escto']").val(),
+			"previous": $("form[name="+id+"] > input[name='prev']").val(),
+			"next": $("#editIssueFollowUpDate").val() || $("form[name="+id+"] > input[name='next']").val(),
+			"resolved": "unresolved"
+		}
+		update(data);
+	});
 
 	$("#resolveButton").click(function(){
 		var data=
@@ -48,7 +70,7 @@ $(document).ready(function(){
 			"next": $("form[name="+id+"] > input[name='next']").val(),
 			"resolved": "resolved"
 		};
-		update(data);
+		del(data);
 	});
 
 	$("#createButton").click(createComplete);
@@ -79,7 +101,7 @@ function create(data){
 
 	// post to server
 	$.ajax({
-		"url" : "/create",
+		"url" : "/issues",
 		"dataType" : "json",
 		"data" : {issue: data},
 		"type" : "POST",
@@ -94,10 +116,25 @@ function update(data){
 
 	// put to server
 	$.ajax({
-		"url" : "/update/"+data._id,
+		"url" : "/issues/"+data._id,
 		"dataType" : "json",
 		"data" : {issue: data},
 		"type" : "PUT",
+		"success" : success
+	});
+}
+
+function del(data){
+	var success = function(response){
+		return location.href = "/issues";
+	};
+
+	// put to server
+	$.ajax({
+		"url" : "/issues/"+data._id,
+		"dataType" : "json",
+		"data" : {issue: data},
+		"type" : "DELETE",
 		"success" : success
 	});
 }

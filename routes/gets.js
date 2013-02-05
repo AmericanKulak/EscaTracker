@@ -8,7 +8,7 @@ var sortDate= function(a,b){
 
 exports.issues = function(req, response){
 	if(req.accepts('text/html')=='text/html'){
-		request.get("http://127.0.0.1:8002/viewIssues", function(error, res){
+		request.get("http://127.0.0.1:8002/unresolvedIssues", function(error, res){
 			if(error){return console.log(error);}
 			return response.render('index', { 
 		        title : 'EscaTracker',
@@ -17,14 +17,14 @@ exports.issues = function(req, response){
 		});
 	}
 	else if(req.accepts('json')=='json'){
-		request.get("http://127.0.0.1:8002/viewIssues", function(error, res){
+		request.get("http://127.0.0.1:8002/unresolvedIssues", function(error, res){
 			if(error){return console.log(error);}
-			return res.body
+			return response.json(res.body);
 	      	
 		});
 	}
 };
-exports.viewIssues = function(req,response){
+exports.unresolvedIssues = function(req,response){
  	if(req.accepts('json')=='json'){
  		var jsRep = new Array();
 		var i=0;
